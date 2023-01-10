@@ -16,13 +16,13 @@ import React, { useState } from "react";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import CancelIcon from "@mui/icons-material/Cancel";
 import WheelComponent from "react-wheel-of-prizes";
-
+import teaLogo from "./Tea.jpg"
 function Draw() {
   const [candids, setCandids] = useState([]);
   const [show, setShow] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = React.useState(false);
-
+  const [winner, setWinner] = useState("");
   const handleCandids = () => {
     if (inputValue?.length > 3 && !candids?.includes(inputValue)) {
       setCandids([...candids, inputValue]);
@@ -74,11 +74,19 @@ function Draw() {
     "#FF9000",
   ];
   const onFinished = (w) => {
-    console.log("=======", w);
+    setWinner(w);
   };
   return (
     <Box p={8}>
+      <Stack
+        gap={"8px"}
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="center"
+      >
       <h1>T DRAW</h1>
+      <img src={teaLogo} style={{width:"50px", marginBottom:"10px"}} alt="c"></img>
+      </Stack>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={open}
@@ -108,7 +116,7 @@ function Draw() {
       </Stack>
       <Stack
         py={4}
-        gap="20px"
+        gap="16px"
         flexDirection="row"
         justifyContent="center"
         alignItems="center"
@@ -150,6 +158,7 @@ function Draw() {
             downDuration={1000}
             fontFamily="Arial"
           />
+          <h1>{winner}</h1>
         </Box>
       )}
     </Box>
