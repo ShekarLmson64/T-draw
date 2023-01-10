@@ -37,6 +37,7 @@ function Draw() {
   };
   const removeCandid = (cname) => {
     setCandids(candids.filter((candid) => candid !== cname));
+    setShow(false);
   };
 
   const handleClick = () => {
@@ -76,7 +77,8 @@ function Draw() {
     console.log("=======", w);
   };
   return (
-    <Box p={10}>
+    <Box p={8}>
+      <h1>T DRAW</h1>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={open}
@@ -128,7 +130,7 @@ function Draw() {
           ))}
         </List>
       </Box>
-      {!show && (
+      {candids?.length > 1 && !show && (
         <Button onClick={() => setShow(true)} variant="contained">
           Load Spinner
         </Button>
