@@ -16,7 +16,7 @@ import React, { useState } from "react";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import CancelIcon from "@mui/icons-material/Cancel";
 import WheelComponent from "react-wheel-of-prizes";
-import teaLogo from "./Tea.jpg"
+import teaLogo from "./Tea.jpg";
 function Draw() {
   const [candids, setCandids] = useState([]);
   const [show, setShow] = useState(false);
@@ -77,16 +77,7 @@ function Draw() {
     setWinner(w);
   };
   return (
-    <Box p={8}>
-      <Stack
-        gap={"8px"}
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="center"
-      >
-      <h1>T DRAW</h1>
-      <img src={teaLogo} style={{width:"50px", marginBottom:"10px"}} alt="c"></img>
-      </Stack>
+    <Box p={4}>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={open}
@@ -95,6 +86,19 @@ function Draw() {
         message="Already exists in list"
         action={action}
       />
+      <Stack
+        gap={"8px"}
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <h1>T DRAW</h1>
+        <img
+          src={teaLogo}
+          style={{ width: "50px", marginBottom: "10px" }}
+          alt="c"
+        ></img>
+      </Stack>
       <Stack
         gap="20px"
         flexDirection="row"
@@ -126,6 +130,30 @@ function Draw() {
           Clear All
         </Button>
       </Stack>
+      {candids?.length > 1 && !show && (
+        <Button onClick={() => setShow(true)} variant="contained">
+          Load Spinner
+        </Button>
+      )}
+      {candids?.length > 1 && show && (
+        <Box>
+          <h1>{winner}</h1>
+          <WheelComponent
+            segments={candids}
+            segColors={segColors}
+            onFinished={(winner) => onFinished(winner)}
+            onStart={() => setWinner(" ")}
+            primaryColor="black"
+            contrastColor="white"
+            buttonText="Spin"
+            size={190}
+            upDuration={100}
+            isOnlyOnce={false}
+            downDuration={1000}
+            fontFamily="Arial"
+          />
+        </Box>
+      )}
       <Box width={"300px"} m={"0 auto"}>
         <List>
           {candids?.map((candid) => (
@@ -138,29 +166,6 @@ function Draw() {
           ))}
         </List>
       </Box>
-      {candids?.length > 1 && !show && (
-        <Button onClick={() => setShow(true)} variant="contained">
-          Load Spinner
-        </Button>
-      )}
-      {candids?.length > 1 && show && (
-        <Box>
-          <WheelComponent
-            segments={candids}
-            segColors={segColors}
-            onFinished={(winner) => onFinished(winner)}
-            primaryColor="black"
-            contrastColor="white"
-            buttonText="Spin"
-            size={190}
-            upDuration={100}
-            isOnlyOnce={false}
-            downDuration={1000}
-            fontFamily="Arial"
-          />
-          <h1>{winner}</h1>
-        </Box>
-      )}
     </Box>
   );
 }
