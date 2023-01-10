@@ -15,9 +15,11 @@ import {
 import React, { useState } from "react";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import CancelIcon from "@mui/icons-material/Cancel";
+import WheelComponent from "react-wheel-of-prizes";
 
 function Draw() {
   const [candids, setCandids] = useState([]);
+  const [show, setShow] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = React.useState(false);
 
@@ -25,6 +27,7 @@ function Draw() {
     if (inputValue?.length > 3 && !candids?.includes(inputValue)) {
       setCandids([...candids, inputValue]);
       setInputValue("");
+      setShow(false);
     }
     //candid already existed in list
     if (candids?.includes(inputValue)) {
@@ -59,6 +62,19 @@ function Draw() {
       </IconButton>
     </React.Fragment>
   );
+  const segColors = [
+    "#EE4040",
+    "#F0CF50",
+    "#815CD1",
+    "#3DA5E0",
+    "#34A24F",
+    "#F9AA1F",
+    "#EC3F3F",
+    "#FF9000",
+  ];
+  const onFinished = (w) => {
+    console.log("=======", w);
+  };
   return (
     <Box p={10}>
       <Snackbar
@@ -112,6 +128,28 @@ function Draw() {
           ))}
         </List>
       </Box>
+      {!show && (
+        <Button onClick={() => setShow(true)} variant="contained">
+          Load Spinner
+        </Button>
+      )}
+      {candids?.length > 1 && show && (
+        <Box>
+          <WheelComponent
+            segments={candids}
+            segColors={segColors}
+            onFinished={(winner) => onFinished(winner)}
+            primaryColor="black"
+            contrastColor="white"
+            buttonText="Spin"
+            size={190}
+            upDuration={100}
+            isOnlyOnce={false}
+            downDuration={1000}
+            fontFamily="Arial"
+          />
+        </Box>
+      )}
     </Box>
   );
 }
