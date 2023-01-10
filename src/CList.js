@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-function Main() {
+function CList() {
     const [candids, setCandids] = useState([])
     const [inputValue, setInputValue] = useState("")
     const handleCandids = () => {
@@ -17,4 +17,4 @@ function Main() {
   )
 }
 
-export default Main
+export default CList
