@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  margin: 0 auto
+  margin: 0 auto;
 }
 
 .App-logo {
@@ -38,11 +38,7 @@
   }
 }
 
-#wheel{
-  width: 100vw;
-  margin: 0 auto;
-}
-
-#canvas{
-  width: 45vw;
+#canvas {
+  width: 50vw;
+  transform: translateX(20%);
 }
