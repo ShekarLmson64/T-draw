@@ -37,3 +37,12 @@
     transform: rotate(360deg);
   }
 }
+
+#wheel{
+  width: 100vw;
+  margin: 0 auto;
+}
+
+#canvas{
+  width: 45vw;
+}
