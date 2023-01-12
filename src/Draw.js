@@ -23,16 +23,19 @@ function Draw() {
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = React.useState(false);
   const [winner, setWinner] = useState("");
+  const [showList, setShowList] = useState(false);
   const handleCandids = () => {
     if (inputValue?.length > 3 && !candids?.includes(inputValue)) {
       setCandids([...candids, inputValue]);
       setInputValue("");
       setShow(false);
+      setShowList(true);
     }
     //candid already existed in list
     if (candids?.includes(inputValue)) {
       handleClick();
       setInputValue("");
+      setShowList(true);
     }
   };
   const removeCandid = (cname) => {
@@ -76,6 +79,7 @@ function Draw() {
   const onFinished = (w) => {
     setWinner(w);
   };
+
   return (
     <Box p={4}>
       <Snackbar
@@ -92,7 +96,7 @@ function Draw() {
         alignItems="center"
         justifyContent="center"
       >
-        <h1>T DRAW</h1>
+        <h1>T SPIN</h1>
         <img
           src={teaLogo}
           style={{ width: "50px", marginBottom: "10px" }}
@@ -118,23 +122,30 @@ function Draw() {
           color={inputValue?.length <= 3 ? "disabled" : "primary"}
         />
       </Stack>
-      <Stack
-        py={4}
-        gap="16px"
-        flexDirection="row"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Typography>{candids?.length} Members</Typography>
-        <Button variant="outlined" onClick={() => setCandids([])}>
-          Clear All
-        </Button>
+      <Stack py={2} justifyContent="center" alignItems="center">
+        <Typography variant="h6" component="h6">
+          {candids?.length} {candids?.length == 1 ? "Member" : "Members"}
+        </Typography>
+        <Stack
+          py={2}
+          gap="20px"
+          flexDirection="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Button variant="outlined" onClick={() => setCandids([])}>
+            Clear All
+          </Button>
+          {candids?.length > 1 && !show && (
+            <Button
+              onClick={() => [setShow(true), setShowList(false), setWinner("")]}
+              variant="contained"
+            >
+              Load Spinner
+            </Button>
+          )}
+        </Stack>
       </Stack>
-      {candids?.length > 1 && !show && (
-        <Button onClick={() => setShow(true)} variant="contained">
-          Load Spinner
-        </Button>
-      )}
       {candids?.length > 1 && show && (
         <Box>
           <h1>{winner}</h1>
@@ -154,18 +165,20 @@ function Draw() {
           />
         </Box>
       )}
-      <Box width={"300px"} m={"0 auto"}>
-        <List>
-          {candids?.map((candid) => (
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemText primary={candid} />
-                <CancelIcon onClick={() => removeCandid(candid)} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Box>
+      {showList && (
+        <Box width={"300px"} m={"0 auto"}>
+          <List>
+            {candids?.map((candid) => (
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListItemText primary={candid} />
+                  <CancelIcon onClick={() => removeCandid(candid)} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      )}
     </Box>
   );
 }
