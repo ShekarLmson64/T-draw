@@ -6,7 +6,6 @@ import {
   List,
   ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
   Snackbar,
   Button,
@@ -17,16 +16,25 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import CancelIcon from "@mui/icons-material/Cancel";
 import WheelComponent from "react-wheel-of-prizes";
 import teaLogo from "./Tea.jpg";
+
 function Draw() {
-  const [candids, setCandids] = useState([]);
+  const getStoredCandids = () => {
+    return JSON.parse(localStorage.getItem("storedCandids")) || [];
+  };
+  const [candids, setCandids] = useState(getStoredCandids());
   const [show, setShow] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = React.useState(false);
   const [winner, setWinner] = useState("");
-  const [showList, setShowList] = useState(false);
+  const [showList, setShowList] = useState(true);
   const handleCandids = () => {
+    //Adding Candids to list
     if (inputValue?.length > 3 && !candids?.includes(inputValue)) {
       setCandids([...candids, inputValue]);
+      localStorage.setItem(
+        "storedCandids",
+        JSON.stringify([...candids, inputValue])
+      );
       setInputValue("");
       setShow(false);
       setShowList(true);
@@ -38,8 +46,11 @@ function Draw() {
       setShowList(true);
     }
   };
+  //Removing Candids from list
   const removeCandid = (cname) => {
-    setCandids(candids.filter((candid) => candid !== cname));
+    const newCandids = candids.filter((candid) => candid !== cname);
+    setCandids(newCandids);
+    localStorage.setItem("storedCandids", JSON.stringify(newCandids));
     setShow(false);
   };
 
@@ -72,9 +83,13 @@ function Draw() {
     "#815CD1",
     "#3DA5E0",
     "#34A24F",
+    "#f4324F",
     "#F9AA1F",
     "#EC3F3F",
     "#FF9000",
+    "#815CD1",
+    "#3DA5E0",
+    "#34A24F",
   ];
   const onFinished = (w) => {
     setWinner(w);
@@ -114,6 +129,7 @@ function Draw() {
           label="Name"
           variant="outlined"
           onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={(e) => e?.key === "Enter" && handleCandids()}
           value={inputValue}
         />
         <PersonAddAlt1Icon
@@ -123,9 +139,6 @@ function Draw() {
         />
       </Stack>
       <Stack py={2} justifyContent="center" alignItems="center">
-        <Typography variant="h6" component="h6">
-          {candids?.length} {candids?.length == 1 ? "Member" : "Members"}
-        </Typography>
         <Stack
           py={2}
           gap="20px"
@@ -145,6 +158,9 @@ function Draw() {
             </Button>
           )}
         </Stack>
+        <Typography variant="h6" component="h6">
+          {candids?.length} {candids?.length == 1 ? "Member" : "Members"}
+        </Typography>
       </Stack>
       {candids?.length > 1 && show && (
         <Box>
